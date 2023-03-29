@@ -40,13 +40,18 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function game() {
-    for (let i = 0; i < 5; i++) {
+    let score = 0;
+    const nbTry = 5;
+    const div = document.createElement('div');
+    div.setAttribute('id','scoreDiv');
+    
+    for (let i = 0; i < nbTry; i++) {
         let playerSelection = prompt("Make a choice (rock, paper, scissors): ").toLowerCase();
         result = playRound(playerSelection, getComputerSelection())
         console.log(result);
     }
 }
 
-game();
+
 
 
