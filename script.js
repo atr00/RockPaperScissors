@@ -1,57 +1,83 @@
 const choices = ["rock", "paper", "scissors"];
+const btn_rock = document.querySelector("#rock");
+const btn_paper = document.querySelector("#paper");
+const btn_scissors = document.querySelector("#scissors");
+const btn_reset = document.querySelector("#reset");
+const disp_score = document.querySelector("#score");
+let play_btns = [btn_paper, btn_rock, btn_scissors];
+
+let score = 0;
+let play_count = 0;
+const nbTry = 5;
 
 function getComputerSelection () {
     const computerSelection = choices[Math.floor(Math.random() * 3)];
     return computerSelection;
 }
 
-function playRound(playerSelection, computerSelection) {
-    if (computerSelection === "rock") {
-        if (playerSelection === "rock") {
-            return "Tie! Rock against Rock!";
-        } else if (playerSelection === "paper") {
-            return "You win! Paper beats Rock!";
-        } else if (playerSelection === "scissors") {
-            return "You lose! Rock beats paper!";
-        } else {
-            return "You did not enter a correct choice."
+function playRound(playerSelection) {
+    if (play_count++ < 5) {
+        let computerSelection = getComputerSelection();
+        if (computerSelection === "rock") {
+            if (playerSelection === "rock") {
+                play_count--;
+            } else if (playerSelection === "paper") {
+                score++;
+            } else if (playerSelection === "scissors") {
+                // pass
+            } else {
+                console.log('Wrong input');
+            }
+        } else if (computerSelection === "paper") {
+            if (playerSelection === "paper") {
+                play_count--;
+            } else if (playerSelection === "rock") {
+                // pass;
+            } else if (playerSelection === "scissors") {
+                score++;;
+            } else {
+                console.log('Wrong input');
+            }
+        } else if (computerSelection === "scissors") {
+            if (playerSelection === "scissors") {
+                play_count--;
+            } else if (playerSelection === "rock") {
+                score++;
+            } else if (playerSelection === "paper") {
+                // pass
+            } else {
+                console.log('Wrong input');
+            }
         }
-    } else if (computerSelection === "paper") {
-        if (playerSelection === "paper") {
-            return "Tie! Paper against Paper!";
-        } else if (playerSelection === "rock") {
-            return "You lose! Paper beats Rock!";
-        } else if (playerSelection === "scissors") {
-            return "You win! Scissors beats paper!";
+        console.log(`Player chose ${playerSelection}`);
+        console.log(`Computer chose ${computerSelection}`);   
+        disp_score.textContent = `Score: ${score}/${play_count}`
+    } 
+    if (play_count >= 5) {
+        if (score > 2) {
+            disp_score.textContent = "You win!!";
         } else {
-            return "You did not enter a correct choice."
-        }
-    } else if (computerSelection === "scissors") {
-        if (playerSelection === "scissors") {
-            return "Tie! Scissors against Scissors!";
-        } else if (playerSelection === "rock") {
-            return "You win! Rock beats scissors!";
-        } else if (playerSelection === "paper") {
-            return "You lose! Scissors beats paper!";
-        } else {
-            return "You did not enter a correct choice."
+            disp_score.textContent = "You lose!!";
         }
     }
+ 
 }
 
-function game() {
-    let score = 0;
-    const nbTry = 5;
-    const div = document.createElement('div');
-    div.setAttribute('id','scoreDiv');
+function reset() {
+    score = 0;
+    play_count = 0;
+    disp_score.textContent = `Score: ${score}/${play_count}`
+}
+
+
+btn_reset.addEventListener('click', reset);
+
+for (btn of play_btns) {
+    btn.addEventListener('click', (e) => playRound(e.target.id));
+}
+
+
     
-    for (let i = 0; i < nbTry; i++) {
-        let playerSelection = prompt("Make a choice (rock, paper, scissors): ").toLowerCase();
-        result = playRound(playerSelection, getComputerSelection())
-        console.log(result);
-    }
-}
-
 
 
 
